@@ -1,13 +1,41 @@
-const request = require('request');
-const yargs = require('yargs');
+// const yargs = require('yargs');
+// const geocode = require('./geocode/geocode.js');
+// const args = yargs
+//     .options({
+//         a: {
+//             demand: true,
+//             alias: 'address',
+//             describe: 'Address to fetch weather for',
+//             string: true
+//         }
+//     })
+//     .help()
+//     .alias('help', 'h')
+//     .argv;
+// // console.log(args)
+// // https://www.forecast.io
 
-const args = yargs;
+// geocode.geocodeAddress(args.address, (errorMessage, results) => {
+//     if(errorMessage) {
+//         console.log(errorMessage);
+//     } else {
+//         console.log(JSON.stringify(results, undefined, 2));
+//     }
+// });
+
+const request = require('request');
 
 request({
-    url: 'https://maps.googleapis.com/maps/api/geocode/json?address=14%20fadipe%20street%20somolu%20nigeria',
-    json:true
-},(error, response, body) => {
-    console.log(`Address: ${body.results[0].formatted_address}`);
-    console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
-    console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
+    uri: 'https://api.darksky.net/forecast/9d3e73893ff888f0f9ad26ff1835d7d7/6.504164200000001,3.3370619',
+    json: true
+}, (error, response, body) => {
+    if (error) {
+        console.log('Unable to connect darksky.net server')
+    } else if (response.statusCode === 400 || response.statusCode === 403) {
+        console.log('Invalid Address');
+    } else if(!error && response.statusCode === 200) {
+        console.log(body.currently.temperature)
+    } else {
+        console.log('Unable to fetch weather api')
+    }
 });
