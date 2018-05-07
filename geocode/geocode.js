@@ -14,11 +14,13 @@ const geocodeAddress = (address, callback) => {
             callback('Invalid Address');
         }
         else if (body.status === 'OK') {
-            callback(undefined, {
+            callback(undefined,  {
                 address: body.results[0].formatted_address,
                 latitude: body.results[0].geometry.location.lat,
                 longitude: body.results[0].geometry.location.lng,
             });
+        } else {
+            console.log('Unknow Error')
         }
 
     });
